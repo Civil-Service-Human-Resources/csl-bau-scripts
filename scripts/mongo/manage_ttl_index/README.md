@@ -1,6 +1,6 @@
-# Create TTL index
+# Manage TTL index
 
-This script will create a TTL index against the specified collection in CosmosDB.
+This script will create or delete a TTL index against the specified collection in CosmosDB.
 
 The TTL index will actively delete documents that are older than a specified time period. The default value for this is **2 weeks**.
 
@@ -15,6 +15,9 @@ This script was created mainly for use with the `states` collection, as buildup 
 
 Run the script with the `run.sh` command in the root directory, followed by:
 
-`scripts/mongo/create_ttl_index_script.py <COLLECTION_NAME>`
+`scripts/mongo/manage_ttl_index_script.py <COLLECTION_NAME> <FUNCTION>`
 
-Where `<COLLECTION_NAME>` is the name of the mongo collection to apply the index to.
+Where:
+
+- `<COLLECTION_NAME>` is the name of the mongo collection to apply the index to.
+- `<FUNCTION>` `create` or `delete`, depending on the requirement
