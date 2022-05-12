@@ -13,8 +13,8 @@ This script was created mainly for use with the `states` collection, as buildup 
 
 ## Usage
 
-Run the script with the following command:
+Run the script with the `run.sh` command in the root directory, followed by:
 
-`python scripts/mongo/create_ttl_index_script.py <COLLECTION_NAME>`
+`scripts/mongo/create_ttl_index_script.py <COLLECTION_NAME>`
 
 Where `<COLLECTION_NAME>` is the name of the mongo collection to apply the index to.
