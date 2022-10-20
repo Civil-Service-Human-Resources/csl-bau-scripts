@@ -2,8 +2,6 @@ import logging
 import sys
 from dotenv import load_dotenv
 import os
-from azure.identity import DefaultAzureCredential
-from azure.mgmt.web import WebSiteManagementClient
 
 load_dotenv()
 
@@ -18,14 +16,6 @@ logger.addHandler(file_log)
 console_log = logging.StreamHandler(sys.stdout)
 console_log.setFormatter(log_formatter)
 logger.addHandler(console_log)
-
-def get_azure_app_client():
-    SUBSCRIPTION_ID = os.environ['SUBSCRIPTION_ID']
-    credential = DefaultAzureCredential()
-    return WebSiteManagementClient(credential, SUBSCRIPTION_ID)
-
-
-TARGET_ENV = os.environ["TARGET_ENV"]
 
 def get_sql_conn(database):
 
