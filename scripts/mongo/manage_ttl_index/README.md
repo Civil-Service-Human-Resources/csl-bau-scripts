@@ -15,9 +15,10 @@ This script was created mainly for use with the `states` collection, as buildup 
 
 Run the script with the `run.sh` command in the root directory, followed by:
 
-`scripts/mongo/manage_ttl_index_script.py <COLLECTION_NAME> <FUNCTION>`
+`scripts/mongo/manage_ttl_index_script.py <COLLECTION_NAME> <FUNCTION> <WEEKS_TTL>`
 
 Where:
 
 - `<COLLECTION_NAME>` is the name of the mongo collection to apply the index to.
 - `<FUNCTION>` `create` or `delete`, depending on the requirement
+- `<WEEKS_TTL>` number of weeks for TTL (weeks to keep the data for before deleting it)

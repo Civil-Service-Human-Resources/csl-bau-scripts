@@ -5,8 +5,7 @@ import pymongo
 
 from scripts.mongo.config import generate_mongo_collection
 
-WEEKS_TO_KEEP = 2
-TTL_SECONDS = WEEKS_TO_KEEP * 7 * 24 * 60 * 60
+DEFAULT_WEEKS_TO_KEEP = 2
 
 DEFAULT_COLLECTION = 'states'
 
@@ -21,7 +20,7 @@ def create_index(collection, ttl_seconds_lifespan):
 
     res = collection.create_index([("_ts", pymongo.ASCENDING)], expireAfterSeconds=ttl_seconds_lifespan, background=True)
 
-    print(f"CREATED INDEX {res}")
+    print(f"CREATED COLLECTION {res}")
 
 
 def delete_index(collection):
@@ -32,28 +31,35 @@ def delete_index(collection):
     print(f"DELETED INDEX _ts_1")
 
 
-def run(func, collection, ttl_seconds_lifespan):
+def run():
 
-    if func == 'create':
-        create_index(collection, ttl_seconds_lifespan)
+    try:
+        collection_name = sys.argv[1]
+    except:
+        print(f"No/invalid collection supplied")
+        exit()
+
+    try:
+        func_name = sys.argv[2]
+        if func_name not in VALID_FUNCS:
+            raise Exception(f"{func_name} is not a valid function")
+    except:
+        print(f"No/invalid function supplied (valid functions are {VALID_FUNCS})")
+        exit()
+
+    try:
+        weeks_to_keep = int(sys.argv[3])
+        ttl_seconds = weeks_to_keep * 7 * 24 * 60 * 60
+    except:
+        print(f"No/invalid weeks to keep supplied (number of weeks to retain data before it is deleted)")
+        exit()
+
+    mongo_collection: Collection = generate_mongo_collection(collection_name)
+
+    if func_name == 'create':
+        create_index(mongo_collection, ttl_seconds)
     else:
-        delete_index(collection)
+        delete_index(mongo_collection)
 
 
-try:
-    collection_name = sys.argv[1]
-except:
-    print(f"No/invalid collection supplied, defaulting to {DEFAULT_COLLECTION}")
-    collection_name = DEFAULT_COLLECTION
-
-try:
-    func_name = sys.argv[2]
-    if func_name not in VALID_FUNCS:
-        raise Exception(f"{func_name} is not a valid function")
-except:
-    print(f"No/invalid function supplied (valid functions are {VALID_FUNCS})")
-    exit()
-
-mongo_collection: Collection = generate_mongo_collection(collection_name)
-
-run(func_name, mongo_collection, TTL_SECONDS)
+run()
